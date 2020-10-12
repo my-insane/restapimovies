@@ -12,12 +12,21 @@ public class LoadDatabase {
 
     @Bean
     CommandLineRunner initDatabase(MoviesRepository repository) {
-        return args -> log.info("Preloading " + repository.save(new Movies( 1L,
-                "Example movie",
-                2018,
-                "Somebody",
-                "02:30:00",
-                8)));
+
+        return args -> {
+            log.info("Preloading " + repository.save(new Movies(
+                    "Example movie",
+                    2018,
+                    "Somebody",
+                    "02:30:00",
+                    8)));
+            log.info("Preloading " + repository.save(new Movies(
+                    "Example movie2",
+                    2019,
+                    "Somebody",
+                    "02:30:00",
+                    8)));
+        };
     }
 
 }

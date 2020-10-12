@@ -1,51 +1,23 @@
 package com.myinsane.restapimovies;
 
-import java.sql.Time;
 import java.lang.String;
-import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Movies {
+class Movies {
 
-    private @Id
-    @GeneratedValue
-    Long id;
+    private @Id @GeneratedValue Long id;
     private String title;
     private int year;
     private String director;
     private String length;
     private int rating;
 
-    public Movies() { }
-
-    public Movies(Long id, String title, int year, String director, String length, int rating) {
-        this.id = id;
-        if (title == null) {
-            int status = 400;
-            String reason = "Field 'title' is required";
-            return;
-        } else this.title = title;
-        if (year < 1900) {
-            int status = 400;
-            String reason = "Field 'year' should be fewer then 1900";
-            return;
-        }
-        if (year > 2100) {
-            int status = 400;
-            String reason = "Field 'year' should be less then 2100";
-            return;
-        } else this.year = year;
-        this.director = director;
-        this.length = length;
-        this.rating = rating;
-    }
-
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -53,7 +25,7 @@ public class Movies {
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(String title) {
@@ -61,7 +33,7 @@ public class Movies {
     }
 
     public int getYear() {
-        return year;
+        return this.year;
     }
 
     public void setYear(int year) {
@@ -69,7 +41,7 @@ public class Movies {
     }
 
     public String getDirector() {
-        return director;
+        return this.director;
     }
 
     public void setDirector(String director) {
@@ -77,7 +49,7 @@ public class Movies {
     }
 
     public String getLength() {
-        return length;
+        return this.length;
     }
 
     public void setLength(String length) {
@@ -85,11 +57,22 @@ public class Movies {
     }
 
     public int getRating() {
-        return rating;
+        return this.rating;
     }
 
     public void setRating(int rating) {
         this.rating = rating;
     }
+
+    public Movies() { }
+
+    public Movies(String title, int year, String director, String length, int rating) {
+        this.title = title;
+        this.year = year;
+        this.director = director;
+        this.length = length;
+        this.rating = rating;
+    }
+
 }
 
