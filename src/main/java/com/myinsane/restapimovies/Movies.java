@@ -1,6 +1,7 @@
 package com.myinsane.restapimovies;
 
 import java.lang.String;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -74,5 +75,19 @@ class Movies {
         this.rating = rating;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.title, this.year);
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" + "id=" + this.id +
+                ", title='" + this.title + '\'' +
+                ", year='" + this.year + '\'' +
+                ", director='" + this.director + '\'' +
+                ", length='" + this.length + '\'' +
+                ", rating='" + this.rating + '\'' + '}';
+    }
 }
 
