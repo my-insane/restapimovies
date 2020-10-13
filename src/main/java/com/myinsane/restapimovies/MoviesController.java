@@ -1,8 +1,13 @@
 package com.myinsane.restapimovies;
 
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 class MoviesController {
@@ -16,9 +21,16 @@ class MoviesController {
     //Aggregate root
 
     @GetMapping("/movies")
-    List<Movies> all() {
-        return repository.findAll();
+    CollectionModel<EntityModel<Movies>> all() {
+        List<EntityModel<Movies>> movies = repository.findAll().stream()
+                .map(movie -> EntityModel.of(movie),
+                        linkTo(methodOn(MoviesController.class).one(movie.getId())).withSelfRel(),
+                        linkTo(methodOn(MoviesController.class).all()).withRel("employees")))
+      .collect(Collectors.toList());
     }
+//    List<Movies> all() {
+//        return repository.findAll();
+//    }
 
     @PostMapping("/movies")
     Movies newMovies(@RequestBody Movies newMovies) {
@@ -27,10 +39,18 @@ class MoviesController {
 
     //Single item
     @GetMapping("/movies/{id}")
-    Movies one(@PathVariable long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new MoviesNotFoundException(id));
+    EntityModel<Movies> one(@PathVariable Long id) {
+        Movies movies = repository.findById(id)
+        .orElseThrow(() -> new MoviesNotFoundException(id));
+
+        return EntityModel.of(movies, //
+                linkTo(methodOn(MoviesController.class).one(id)).withSelfRel(),
+                linkTo(methodOn(MoviesController.class).all()).withRel("movies"));
     }
+//    Movies one(@PathVariable long id) {
+//        return repository.findById(id)
+//                .orElseThrow(() -> new MoviesNotFoundException(id));
+//    }
 
     @PutMapping("/movies/{id}")
     Movies replaceMovies(@RequestBody Movies newMovies, @PathVariable Long id) {
